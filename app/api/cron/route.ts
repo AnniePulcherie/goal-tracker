@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig: import('next').NextConfig = {
-  serverExternalPackages: ["node-cron"],
-};
+import { startCronJobs } from "@/lib/cron";
+import { NextResponse } from "next/server";
 
-export default nextConfig;
+export async function GET() {
+  startCronJobs();
+  return NextResponse.json({ status: "Cron jobs actifs" });
+}

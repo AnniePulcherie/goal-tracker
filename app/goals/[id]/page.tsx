@@ -40,8 +40,9 @@ export default function GoalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [congratulations, setCongratulations] = useState<string | null>(null);
 
-  useEffect(() => {
+ useEffect(() => {
     fetchGoal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   async function fetchGoal() {
