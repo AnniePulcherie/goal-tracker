@@ -45,26 +45,25 @@ export default function GoalsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 px-6 py-4">
+      <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/dashboard" className="text-gray-400 hover:text-gray-600 text-sm">
               ← Dashboard
             </Link>
             <span className="text-gray-300">|</span>
-            <span className="font-semibold text-gray-900">Mes objectifs</span>
+            <span className="font-semibold text-gray-900 text-sm">Mes objectifs</span>
           </div>
           <Link
             href="/goals/new"
-            className="text-sm bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+            className="text-sm bg-purple-600 text-white px-3 py-1.5 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            + Nouvel objectif
+            + Nouveau
           </Link>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 py-6">
         {loading ? (
           <div className="text-center py-16 text-gray-400">Chargement...</div>
         ) : goals.length === 0 ? (
@@ -73,9 +72,9 @@ export default function GoalsPage() {
               <span className="text-3xl">🎯</span>
             </div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Aucun objectif pour linstant
+              Aucun objectif
             </h2>
-            <p className="text-gray-500 text-sm mb-6">
+            <p className="text-gray-500 text-sm mb-6 px-4">
               Crée ton premier objectif et laisse IA le décomposer en tâches journalières
             </p>
             <Link
@@ -87,13 +86,12 @@ export default function GoalsPage() {
           </div>
         ) : (
           <>
-            {/* Objectifs actifs */}
             {activeGoals.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Objectifs actifs ({activeGoals.length})
+              <div className="mb-6">
+                <h2 className="text-base font-semibold text-gray-900 mb-3">
+                  Actifs ({activeGoals.length})
                 </h2>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   {activeGoals.map((goal) => (
                     <GoalCard
                       key={goal.id}
@@ -106,13 +104,12 @@ export default function GoalsPage() {
               </div>
             )}
 
-            {/* Autres objectifs */}
             {otherGoals.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Autres objectifs ({otherGoals.length})
+                <h2 className="text-base font-semibold text-gray-900 mb-3">
+                  Autres ({otherGoals.length})
                 </h2>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   {otherGoals.map((goal) => (
                     <GoalCard
                       key={goal.id}
@@ -147,29 +144,25 @@ function GoalCard({
   );
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-5 hover:border-purple-200 transition-colors">
-      <div className="flex items-start justify-between mb-3">
+    <div className="bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-200 transition-colors">
+      <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-gray-900 truncate">{goal.title}</h3>
+          <h3 className="font-medium text-gray-900 truncate text-sm">{goal.title}</h3>
           {goal.description && (
-            <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{goal.description}</p>
+            <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{goal.description}</p>
           )}
         </div>
-        <span className={`ml-3 text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-          goal.status === "COMPLETED"
-            ? "bg-green-100 text-green-700"
-            : goal.status === "PAUSED"
-            ? "bg-yellow-100 text-yellow-700"
-            : goal.status === "CANCELLED"
-            ? "bg-red-100 text-red-700"
-            : "bg-purple-100 text-purple-700"
+        <span className={`ml-2 text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
+          goal.status === "COMPLETED" ? "bg-green-100 text-green-700" :
+          goal.status === "PAUSED" ? "bg-yellow-100 text-yellow-700" :
+          goal.status === "CANCELLED" ? "bg-red-100 text-red-700" :
+          "bg-purple-100 text-purple-700"
         }`}>
           {goal.status === "ACTIVE" ? "Actif" : goal.status === "COMPLETED" ? "Terminé" : goal.status === "PAUSED" ? "Pausé" : "Annulé"}
         </span>
       </div>
 
-      {/* Progress */}
-      <div className="mb-3">
+      <div className="mb-2">
         <div className="flex justify-between text-xs text-gray-400 mb-1">
           <span>{completedTasks}/{totalTasks} tâches</span>
           <span>{goal.progress}%</span>
@@ -183,17 +176,17 @@ function GoalCard({
       </div>
 
       {goal.deadline && (
-        <p className="text-xs text-gray-400 mb-3">
-          Échéance : {format(new Date(goal.deadline), "d MMMM yyyy", { locale: fr })}
+        <p className="text-xs text-gray-400 mb-2">
+          Échéance : {format(new Date(goal.deadline), "d MMM yyyy", { locale: fr })}
         </p>
       )}
 
-      <div className="flex gap-2 pt-3 border-t border-gray-50">
+      <div className="flex gap-2 pt-2 border-t border-gray-50">
         <Link
           href={`/goals/${goal.id}`}
           className="flex-1 text-center text-xs bg-purple-50 text-purple-600 py-1.5 rounded-lg hover:bg-purple-100 transition-colors"
         >
-          Voir détails
+          Voir
         </Link>
         <Link
           href={`/goals/${goal.id}/edit`}

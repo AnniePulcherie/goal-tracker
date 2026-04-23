@@ -40,26 +40,22 @@ export default function GoalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [congratulations, setCongratulations] = useState<string | null>(null);
 
- useEffect(() => {
+  useEffect(() => {
     fetchGoal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   async function fetchGoal() {
-  try {
-    const res = await fetch(`/api/goals/${id}`);
-    console.log("Status:", res.status);
-    const data = await res.json();
-    console.log("Data:", data);
-    if (res.ok) {
-      setGoal(data);
+    try {
+      const res = await fetch(`/api/goals/${id}`);
+      const data = await res.json();
+      if (res.ok) setGoal(data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
     }
-    setLoading(false);
-  } catch (error) {
-    console.error("Erreur fetchGoal:", error);
-    setLoading(false);
   }
-}
 
   async function toggleTask(taskId: string, completed: boolean) {
     const res = await fetch(`/api/tasks/${taskId}`, {
@@ -100,108 +96,111 @@ export default function GoalDetailPage() {
 
   const totalTasks = goal.subGoals.reduce((acc, sg) => acc + sg.tasks.length, 0);
   const completedTasks = goal.subGoals.reduce(
-    (acc, sg) => acc + sg.tasks.filter((t) => t.completed).length,
-    0
+    (acc, sg) => acc + sg.tasks.filter((t) => t.completed).length, 0
   );
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 px-6 py-4">
+      <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-30">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/goals" className="text-gray-400 hover:text-gray-600 text-sm">
-              ← Mes objectifs
+          <div className="flex items-center gap-2 min-w-0">
+            <Link href="/goals" className="text-gray-400 hover:text-gray-600 text-sm flex-shrink-0">
+              ←
             </Link>
-            <span className="text-gray-300">|</span>
-            <span className="font-semibold text-gray-900 truncate max-w-xs">
+            <span className="text-gray-300 flex-shrink-0">|</span>
+            <span className="font-semibold text-gray-900 text-sm truncate">
               {goal.title}
             </span>
           </div>
           <Link
             href={`/goals/${id}/edit`}
-            className="text-sm bg-gray-100 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+            className="text-sm bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition-colors flex-shrink-0 ml-2"
           >
             Modifier
           </Link>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-4 py-6">
         {congratulations && (
-          <div className="bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-xl mb-6 flex items-center gap-3">
-            <span className="text-2xl">🎉</span>
-            <p className="font-medium">{congratulations}</p>
+          <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl mb-4 flex items-center gap-3">
+            <span className="text-xl flex-shrink-0">🎉</span>
+            <p className="font-medium text-sm">{congratulations}</p>
           </div>
         )}
 
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <h1 className="text-2xl font-semibold text-gray-900">{goal.title}</h1>
+        {/* Goal header */}
+        <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-4">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg font-semibold text-gray-900">{goal.title}</h1>
               {goal.description && (
-                <p className="text-gray-500 text-sm mt-2">{goal.description}</p>
+                <p className="text-gray-500 text-sm mt-1">{goal.description}</p>
               )}
             </div>
-            <span className={`ml-4 text-sm px-3 py-1 rounded-full flex-shrink-0 ${
-              goal.status === "COMPLETED"
-                ? "bg-green-100 text-green-700"
-                : goal.status === "PAUSED"
-                ? "bg-yellow-100 text-yellow-700"
-                : "bg-purple-100 text-purple-700"
+            <span className={`ml-3 text-xs px-2 py-1 rounded-full flex-shrink-0 ${
+              goal.status === "COMPLETED" ? "bg-green-100 text-green-700" :
+              goal.status === "PAUSED" ? "bg-yellow-100 text-yellow-700" :
+              "bg-purple-100 text-purple-700"
             }`}>
-              {goal.status === "ACTIVE" ? "Actif" : goal.status === "COMPLETED" ? "Terminé" : goal.status === "PAUSED" ? "Pausé" : "Annulé"}
+              {goal.status === "ACTIVE" ? "Actif" : goal.status === "COMPLETED" ? "Terminé" : "Pausé"}
             </span>
           </div>
 
-          <div className="mb-4">
-            <div className="flex justify-between text-sm text-gray-500 mb-2">
-              <span>{completedTasks} / {totalTasks} tâches complétées</span>
+          <div className="mb-3">
+            <div className="flex justify-between text-xs text-gray-500 mb-1.5">
+              <span>{completedTasks}/{totalTasks} tâches</span>
               <span className="font-medium text-purple-600">{goal.progress}%</span>
             </div>
-            <div className="w-full bg-gray-100 rounded-full h-3">
+            <div className="w-full bg-gray-100 rounded-full h-2">
               <div
-                className="bg-purple-600 h-3 rounded-full transition-all duration-500"
+                className="bg-purple-600 h-2 rounded-full transition-all duration-500"
                 style={{ width: `${goal.progress}%` }}
               />
             </div>
           </div>
 
-          <div className="flex gap-4 text-xs text-gray-400">
-            <span>Créé le {format(new Date(goal.createdAt), "d MMMM yyyy", { locale: fr })}</span>
+          <div className="flex flex-wrap gap-3 text-xs text-gray-400">
+            <span>Créé le {format(new Date(goal.createdAt), "d MMM yyyy", { locale: fr })}</span>
             {goal.deadline && (
-              <span>Échéance : {format(new Date(goal.deadline), "d MMMM yyyy", { locale: fr })}</span>
+              <span>Échéance : {format(new Date(goal.deadline), "d MMM yyyy", { locale: fr })}</span>
             )}
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Sous-objectifs et tâches</h2>
+        {/* Sub goals */}
+        <h2 className="text-base font-semibold text-gray-900 mb-3">
+          Sous-objectifs et tâches
+        </h2>
 
+        <div className="space-y-3">
           {goal.subGoals.map((subGoal) => {
             const subCompleted = subGoal.tasks.filter((t) => t.completed).length;
             const subTotal = subGoal.tasks.length;
             const subProgress = subTotal > 0 ? Math.round((subCompleted / subTotal) * 100) : 0;
 
             return (
-              <div key={subGoal.id} className="bg-white rounded-xl border border-gray-100 p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
+              <div key={subGoal.id} className="bg-white rounded-xl border border-gray-100 p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 ${
                       subProgress === 100 ? "bg-green-100 text-green-700" : "bg-purple-100 text-purple-700"
                     }`}>
                       {subGoal.order}
                     </div>
-                    <div>
-                      <h3 className="font-medium text-gray-900">{subGoal.title}</h3>
+                    <div className="min-w-0">
+                      <h3 className="font-medium text-gray-900 text-sm truncate">{subGoal.title}</h3>
                       {subGoal.description && (
-                        <p className="text-xs text-gray-400 mt-0.5">{subGoal.description}</p>
+                        <p className="text-xs text-gray-400">{subGoal.description}</p>
                       )}
                     </div>
                   </div>
-                  <span className="text-xs text-gray-400">{subCompleted}/{subTotal}</span>
+                  <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
+                    {subCompleted}/{subTotal}
+                  </span>
                 </div>
 
-                <div className="w-full bg-gray-100 rounded-full h-1 mb-4">
+                <div className="w-full bg-gray-100 rounded-full h-1 mb-3">
                   <div
                     className="bg-purple-400 h-1 rounded-full transition-all"
                     style={{ width: `${subProgress}%` }}
@@ -220,7 +219,7 @@ export default function GoalDetailPage() {
                         type="checkbox"
                         checked={task.completed}
                         onChange={(e) => toggleTask(task.id, e.target.checked)}
-                        className="mt-0.5 w-4 h-4 accent-purple-600 cursor-pointer"
+                        className="mt-0.5 w-4 h-4 accent-purple-600 cursor-pointer flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
                         <p className={`text-sm font-medium ${
@@ -232,7 +231,7 @@ export default function GoalDetailPage() {
                           <p className="text-xs text-gray-400 mt-0.5">{task.description}</p>
                         )}
                         <p className="text-xs text-gray-400 mt-1">
-                          Planifié le {format(new Date(task.scheduledAt), "d MMM yyyy", { locale: fr })}
+                          {format(new Date(task.scheduledAt), "d MMM yyyy", { locale: fr })}
                         </p>
                       </div>
                       {task.completed && (

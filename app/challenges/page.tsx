@@ -73,36 +73,36 @@ export default function ChallengesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 px-6 py-4">
+      <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/dashboard" className="text-gray-400 hover:text-gray-600 text-sm">
               ← Dashboard
             </Link>
             <span className="text-gray-300">|</span>
-            <span className="font-semibold text-gray-900">Mes défis</span>
+            <span className="font-semibold text-gray-900 text-sm">Mes défis</span>
           </div>
           <Link
             href="/challenges/new"
-            className="text-sm bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+            className="text-sm bg-purple-600 text-white px-3 py-1.5 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            + Nouveau défi
+            + Nouveau
           </Link>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 py-6">
         {loading ? (
           <div className="text-center py-16 text-gray-400">Chargement...</div>
         ) : challenges.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">💪</span>
             </div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               Aucun défi en cours
             </h2>
-            <p className="text-gray-500 text-sm mb-6">
+            <p className="text-gray-500 text-sm mb-6 px-4">
               Lance-toi un défi et suis ta progression chaque jour !
             </p>
             <Link
@@ -115,11 +115,11 @@ export default function ChallengesPage() {
         ) : (
           <>
             {activeChallenges.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Défis actifs ({activeChallenges.length})
+              <div className="mb-6">
+                <h2 className="text-base font-semibold text-gray-900 mb-3">
+                  Actifs ({activeChallenges.length})
                 </h2>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   {activeChallenges.map((challenge) => (
                     <ChallengeCard
                       key={challenge.id}
@@ -137,10 +137,10 @@ export default function ChallengesPage() {
 
             {otherChallenges.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Autres défis ({otherChallenges.length})
+                <h2 className="text-base font-semibold text-gray-900 mb-3">
+                  Autres ({otherChallenges.length})
                 </h2>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   {otherChallenges.map((challenge) => (
                     <ChallengeCard
                       key={challenge.id}
@@ -180,30 +180,26 @@ function ChallengeCard({
   const successDays = challenge.entries.filter((e) => e.success).length;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-5 hover:border-purple-200 transition-colors">
+    <div className="bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-200 transition-colors">
       <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-base flex-shrink-0"
             style={{ backgroundColor: challenge.color }}
           >
             💪
           </div>
-          <div>
-            <h3 className="font-medium text-gray-900">{challenge.title}</h3>
+          <div className="min-w-0">
+            <h3 className="font-medium text-gray-900 truncate text-sm">{challenge.title}</h3>
             {challenge.description && (
-              <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">
-                {challenge.description}
-              </p>
+              <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{challenge.description}</p>
             )}
           </div>
         </div>
-        <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-          challenge.status === "COMPLETED"
-            ? "bg-green-100 text-green-700"
-            : challenge.status === "ABANDONED"
-            ? "bg-red-100 text-red-700"
-            : "bg-purple-100 text-purple-700"
+        <span className={`ml-2 text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
+          challenge.status === "COMPLETED" ? "bg-green-100 text-green-700" :
+          challenge.status === "ABANDONED" ? "bg-red-100 text-red-700" :
+          "bg-purple-100 text-purple-700"
         }`}>
           {challenge.status === "ACTIVE" ? "Actif" : challenge.status === "COMPLETED" ? "Terminé" : "Abandonné"}
         </span>
@@ -211,27 +207,24 @@ function ChallengeCard({
 
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="text-center p-2 bg-gray-50 rounded-lg">
-          <p className="text-lg font-bold text-orange-500">🔥 {streak}</p>
+          <p className="text-base font-bold text-orange-500">🔥 {streak}</p>
           <p className="text-xs text-gray-400">Série</p>
         </div>
         <div className="text-center p-2 bg-gray-50 rounded-lg">
-          <p className="text-lg font-bold text-purple-600">{successDays}/{totalDays}</p>
+          <p className="text-base font-bold text-purple-600">{successDays}/{totalDays}</p>
           <p className="text-xs text-gray-400">Jours</p>
         </div>
         <div className="text-center p-2 bg-gray-50 rounded-lg">
-          <p className="text-lg font-bold text-green-600">{successRate}%</p>
+          <p className="text-base font-bold text-green-600">{successRate}%</p>
           <p className="text-xs text-gray-400">Réussite</p>
         </div>
       </div>
 
-      <div className="mb-3">
+      <div className="mb-2">
         <div className="w-full bg-gray-100 rounded-full h-1.5">
           <div
             className="h-1.5 rounded-full transition-all"
-            style={{
-              width: `${successRate}%`,
-              backgroundColor: challenge.color,
-            }}
+            style={{ width: `${successRate}%`, backgroundColor: challenge.color }}
           />
         </div>
       </div>
@@ -241,12 +234,12 @@ function ChallengeCard({
         {format(new Date(challenge.endDate), "d MMM yyyy", { locale: fr })}
       </p>
 
-      <div className="flex gap-2 pt-3 border-t border-gray-50">
+      <div className="flex gap-2 pt-2 border-t border-gray-50">
         <Link
           href={`/challenges/${challenge.id}`}
           className="flex-1 text-center text-xs bg-purple-50 text-purple-600 py-1.5 rounded-lg hover:bg-purple-100 transition-colors"
         >
-          Suivi du défi
+          Suivi
         </Link>
         <Link
           href={`/challenges/${challenge.id}/edit`}
