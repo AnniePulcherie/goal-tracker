@@ -72,15 +72,15 @@ export default function ChallengesPage() {
   const otherChallenges = challenges.filter((c) => c.status !== "ACTIVE");
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-30">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-3 sticky top-0 z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/dashboard" className="text-gray-400 hover:text-gray-600 text-sm">
+            <Link href="/dashboard" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-sm">
               ← Dashboard
             </Link>
-            <span className="text-gray-300">|</span>
-            <span className="font-semibold text-gray-900 text-sm">Mes défis</span>
+            <span className="text-gray-300 dark:text-gray-700">|</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm">Mes défis</span>
           </div>
           <Link
             href="/challenges/new"
@@ -96,13 +96,13 @@ export default function ChallengesPage() {
           <div className="text-center py-16 text-gray-400">Chargement...</div>
         ) : challenges.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">💪</span>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
               Aucun défi en cours
             </h2>
-            <p className="text-gray-500 text-sm mb-6 px-4">
+            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 px-4">
               Lance-toi un défi et suis ta progression chaque jour !
             </p>
             <Link
@@ -116,7 +116,7 @@ export default function ChallengesPage() {
           <>
             {activeChallenges.length > 0 && (
               <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-900 mb-3">
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">
                   Actifs ({activeChallenges.length})
                 </h2>
                 <div className="grid md:grid-cols-2 gap-3">
@@ -134,10 +134,9 @@ export default function ChallengesPage() {
                 </div>
               </div>
             )}
-
             {otherChallenges.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold text-gray-900 mb-3">
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">
                   Autres ({otherChallenges.length})
                 </h2>
                 <div className="grid md:grid-cols-2 gap-3">
@@ -180,7 +179,7 @@ function ChallengeCard({
   const successDays = challenge.entries.filter((e) => e.success).length;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-200 transition-colors">
+    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-4 hover:border-purple-200 dark:hover:border-purple-800 transition-colors">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <div
@@ -190,38 +189,40 @@ function ChallengeCard({
             💪
           </div>
           <div className="min-w-0">
-            <h3 className="font-medium text-gray-900 truncate text-sm">{challenge.title}</h3>
+            <h3 className="font-medium text-gray-900 dark:text-gray-100 truncate text-sm">{challenge.title}</h3>
             {challenge.description && (
-              <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{challenge.description}</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 line-clamp-1">{challenge.description}</p>
             )}
           </div>
         </div>
         <span className={`ml-2 text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-          challenge.status === "COMPLETED" ? "bg-green-100 text-green-700" :
-          challenge.status === "ABANDONED" ? "bg-red-100 text-red-700" :
-          "bg-purple-100 text-purple-700"
+          challenge.status === "COMPLETED"
+            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+            : challenge.status === "ABANDONED"
+            ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+            : "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
         }`}>
           {challenge.status === "ACTIVE" ? "Actif" : challenge.status === "COMPLETED" ? "Terminé" : "Abandonné"}
         </span>
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-3">
-        <div className="text-center p-2 bg-gray-50 rounded-lg">
+        <div className="text-center p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <p className="text-base font-bold text-orange-500">🔥 {streak}</p>
-          <p className="text-xs text-gray-400">Série</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">Série</p>
         </div>
-        <div className="text-center p-2 bg-gray-50 rounded-lg">
-          <p className="text-base font-bold text-purple-600">{successDays}/{totalDays}</p>
-          <p className="text-xs text-gray-400">Jours</p>
+        <div className="text-center p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <p className="text-base font-bold text-purple-600 dark:text-purple-400">{successDays}/{totalDays}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">Jours</p>
         </div>
-        <div className="text-center p-2 bg-gray-50 rounded-lg">
-          <p className="text-base font-bold text-green-600">{successRate}%</p>
-          <p className="text-xs text-gray-400">Réussite</p>
+        <div className="text-center p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <p className="text-base font-bold text-green-600 dark:text-green-400">{successRate}%</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">Réussite</p>
         </div>
       </div>
 
       <div className="mb-2">
-        <div className="w-full bg-gray-100 rounded-full h-1.5">
+        <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5">
           <div
             className="h-1.5 rounded-full transition-all"
             style={{ width: `${successRate}%`, backgroundColor: challenge.color }}
@@ -229,28 +230,22 @@ function ChallengeCard({
         </div>
       </div>
 
-      <p className="text-xs text-gray-400 mb-3">
+      <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
         {format(new Date(challenge.startDate), "d MMM", { locale: fr })} →{" "}
         {format(new Date(challenge.endDate), "d MMM yyyy", { locale: fr })}
       </p>
 
-      <div className="flex gap-2 pt-2 border-t border-gray-50">
-        <Link
-          href={`/challenges/${challenge.id}`}
-          className="flex-1 text-center text-xs bg-purple-50 text-purple-600 py-1.5 rounded-lg hover:bg-purple-100 transition-colors"
-        >
+      <div className="flex gap-2 pt-2 border-t border-gray-50 dark:border-gray-800">
+        <Link href={`/challenges/${challenge.id}`} className="flex-1 text-center text-xs bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 py-1.5 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors">
           Suivi
         </Link>
-        <Link
-          href={`/challenges/${challenge.id}/edit`}
-          className="flex-1 text-center text-xs bg-gray-50 text-gray-600 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-        >
+        <Link href={`/challenges/${challenge.id}/edit`} className="flex-1 text-center text-xs bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
           Modifier
         </Link>
         <button
           onClick={() => onDelete(challenge.id)}
           disabled={deleting === challenge.id}
-          className="flex-1 text-xs bg-red-50 text-red-500 py-1.5 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50"
+          className="flex-1 text-xs bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 py-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50"
         >
           {deleting === challenge.id ? "..." : "Supprimer"}
         </button>

@@ -46,27 +46,23 @@ export default function ChallengeDetailPage() {
   async function toggleDay(date: Date, currentSuccess: boolean) {
     const dateStr = format(date, "yyyy-MM-dd");
     setToggling(dateStr);
-
     const res = await fetch(`/api/challenges/${id}/entries`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ date: dateStr, success: !currentSuccess }),
     });
-
     const data = await res.json();
-
     if (!currentSuccess && data.congratulations) {
       setCongratulations(data.congratulations);
       setTimeout(() => setCongratulations(null), 5000);
     }
-
     await fetchChallenge();
     setToggling(null);
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <p className="text-gray-400">Chargement...</p>
       </div>
     );
@@ -74,10 +70,10 @@ export default function ChallengeDetailPage() {
 
   if (!challenge) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-500 mb-4">Défi introuvable</p>
-          <Link href="/challenges" className="text-purple-600 hover:underline text-sm">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">Défi introuvable</p>
+          <Link href="/challenges" className="text-purple-600 dark:text-purple-400 hover:underline text-sm">
             ← Retour aux défis
           </Link>
         </div>
@@ -130,21 +126,21 @@ export default function ChallengeDetailPage() {
   if (currentWeek.length > 0) weeks.push(currentWeek);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-30">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-3 sticky top-0 z-30">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">
-            <Link href="/challenges" className="text-gray-400 hover:text-gray-600 text-sm flex-shrink-0">
+            <Link href="/challenges" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-sm flex-shrink-0">
               ←
             </Link>
-            <span className="text-gray-300 flex-shrink-0">|</span>
-            <span className="font-semibold text-gray-900 text-sm truncate">
+            <span className="text-gray-300 dark:text-gray-700 flex-shrink-0">|</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
               {challenge.title}
             </span>
           </div>
           <Link
             href={`/challenges/${id}/edit`}
-            className="text-sm bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition-colors flex-shrink-0 ml-2"
+            className="text-sm bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0 ml-2"
           >
             Modifier
           </Link>
@@ -153,13 +149,12 @@ export default function ChallengeDetailPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-6">
         {congratulations && (
-          <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl mb-4 flex items-center gap-3">
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 px-4 py-3 rounded-xl mb-4 flex items-center gap-3">
             <span className="text-xl flex-shrink-0">🎉</span>
             <p className="font-medium text-sm">{congratulations}</p>
           </div>
         )}
 
-        {/* Header du défi */}
         <div
           className="rounded-2xl p-5 text-white mb-4"
           style={{ backgroundColor: challenge.color }}
@@ -188,31 +183,29 @@ export default function ChallengeDetailPage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="bg-white rounded-xl border border-gray-100 p-3 text-center">
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-3 text-center">
             <p className="text-2xl font-bold text-orange-500">🔥{streak}</p>
-            <p className="text-xs text-gray-400 mt-0.5">Série</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Série</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-3 text-center">
-            <p className="text-2xl font-bold text-green-600">{successDays}</p>
-            <p className="text-xs text-gray-400 mt-0.5">Réussis</p>
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-3 text-center">
+            <p className="text-2xl font-bold text-green-600 dark:text-green-400">{successDays}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Réussis</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-3 text-center">
-            <p className="text-2xl font-bold text-purple-600">{successRate}%</p>
-            <p className="text-xs text-gray-400 mt-0.5">Taux</p>
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-3 text-center">
+            <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{successRate}%</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Taux</p>
           </div>
         </div>
 
-        {/* Calendrier */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-4">
-          <h2 className="font-semibold text-gray-900 mb-3 text-sm">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
+          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 text-sm">
             Calendrier du défi
           </h2>
 
           <div className="grid grid-cols-7 mb-1">
             {["L", "M", "M", "J", "V", "S", "D"].map((d, i) => (
-              <div key={i} className="text-center text-xs font-medium text-gray-400 py-1">
+              <div key={i} className="text-center text-xs font-medium text-gray-400 dark:text-gray-500 py-1">
                 {d}
               </div>
             ))}
@@ -223,7 +216,6 @@ export default function ChallengeDetailPage() {
               <div key={wi} className="grid grid-cols-7 gap-1">
                 {week.map((day, di) => {
                   if (day.getTime() === 0) return <div key={di} />;
-
                   const entry = getEntryForDay(day);
                   const isSuccess = entry?.success || false;
                   const isFutureDay = isFuture(day) && !isToday(day);
@@ -240,8 +232,8 @@ export default function ChallengeDetailPage() {
                       className={`
                         aspect-square rounded-lg text-xs font-medium transition-all
                         flex flex-col items-center justify-center
-                        ${isFutureDay ? "opacity-30 cursor-not-allowed bg-gray-50" : "cursor-pointer active:scale-95"}
-                        ${isSuccess ? "text-white" : isTodayDay ? "ring-2 ring-offset-1 bg-gray-50 text-gray-700" : "bg-gray-50 text-gray-500"}
+                        ${isFutureDay ? "opacity-30 cursor-not-allowed bg-gray-50 dark:bg-gray-800" : "cursor-pointer active:scale-95"}
+                        ${isSuccess ? "text-white" : isTodayDay ? "ring-2 ring-offset-1 dark:ring-offset-gray-900 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300" : "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400"}
                         ${isToggling ? "opacity-50" : ""}
                       `}
                       style={isSuccess ? { backgroundColor: challenge.color } : {}}
@@ -257,18 +249,18 @@ export default function ChallengeDetailPage() {
             ))}
           </div>
 
-          <div className="flex gap-4 mt-3 pt-3 border-t border-gray-50">
+          <div className="flex gap-4 mt-3 pt-3 border-t border-gray-50 dark:border-gray-800">
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: challenge.color }} />
-              <span className="text-xs text-gray-400">Réussi</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">Réussi</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-gray-100" />
-              <span className="text-xs text-gray-400">Non coché</span>
+              <div className="w-3 h-3 rounded bg-gray-100 dark:bg-gray-700" />
+              <span className="text-xs text-gray-400 dark:text-gray-500">Non coché</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-gray-50 opacity-30" />
-              <span className="text-xs text-gray-400">À venir</span>
+              <div className="w-3 h-3 rounded bg-gray-50 dark:bg-gray-800 opacity-30" />
+              <span className="text-xs text-gray-400 dark:text-gray-500">À venir</span>
             </div>
           </div>
         </div>
